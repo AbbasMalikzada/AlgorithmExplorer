@@ -1,0 +1,632 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Interactive PhoneBook Application — explore sorting and searching algorithms with animated visualizations, code explanations, and complexity analysis.">
+  <title>📞 PhoneBook — Algorithm Explorer</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<div class="container">
+
+  <!-- ===== HEADER ===== -->
+  <header class="header">
+    <h1>📞 PhoneBook — Algorithm Explorer</h1>
+    <p class="subtitle">Learn sorting &amp; searching algorithms — visualize every step!</p>
+    <span class="university-badge">Al-Farabi Kazakh National University · Algorithms &amp; Data Structures</span>
+  </header>
+
+  <!-- ===== TABS ===== -->
+  <nav class="tab-bar" role="tablist">
+    <button class="tab-btn active" data-tab="overview" role="tab">📱 Overview</button>
+    <button class="tab-btn" data-tab="search" role="tab">🔍 Search</button>
+    <button class="tab-btn" data-tab="sort" role="tab">📊 Sort</button>
+    <button class="tab-btn" data-tab="code" role="tab">💻 Code</button>
+  </nav>
+
+  <!-- ════════════════════════════════════════════════════════════
+       TAB 1: OVERVIEW
+       ════════════════════════════════════════════════════════════ -->
+  <section class="tab-content active" id="tab-overview">
+
+    <!-- What is this? -->
+    <div class="glass-card accent-cyan">
+      <div class="info-row">
+        <div class="info-icon cyan">🎯</div>
+        <div class="info-body">
+          <h3 class="color-cyan">What is PhoneBook?</h3>
+          <p>A console-based Python application for managing contacts — but with a twist! It implements <strong>4 sorting algorithms</strong> and <strong>4 search algorithms</strong>, allowing you to compare their performance side-by-side and learn how they work.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Data Structure -->
+    <div class="glass-card accent-yellow">
+      <div class="info-row">
+        <div class="info-icon yellow">🗂️</div>
+        <div class="info-body">
+          <h3 class="color-yellow">Data Structure: List of Dictionaries</h3>
+          <p>Contacts are stored as a Python list of dictionaries: <code style="color:var(--accent-green)">[ {'name': 'Alice', 'phone': '1234'}, ... ]</code>. This simple structure makes it easy to demonstrate searching and sorting algorithms.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Features Grid -->
+    <div class="glass-card">
+      <div class="section-title color-pink">✨ Features</div>
+      <div class="feature-grid">
+        <div class="feature-item"><span class="emoji">➕</span> Add Contact</div>
+        <div class="feature-item"><span class="emoji">➖</span> Remove Contact</div>
+        <div class="feature-item"><span class="emoji">✏️</span> Edit Contact</div>
+        <div class="feature-item"><span class="emoji">📋</span> View All Contacts</div>
+        <div class="feature-item"><span class="emoji">🔍</span> Linear Search</div>
+        <div class="feature-item"><span class="emoji">⚡</span> Binary Search</div>
+        <div class="feature-item"><span class="emoji">🌳</span> BST Search</div>
+        <div class="feature-item"><span class="emoji">📊</span> Sort Comparison</div>
+        <div class="feature-item"><span class="emoji">💾</span> CSV Save/Load</div>
+        <div class="feature-item"><span class="emoji">📈</span> Statistics</div>
+        <div class="feature-item"><span class="emoji">🆚</span> Algorithm Compare</div>
+        <div class="feature-item"><span class="emoji">📚</span> Complexity Guide</div>
+      </div>
+    </div>
+
+    <!-- Big O Guide -->
+    <div class="glass-card accent-green">
+      <div class="section-title color-green">📊 Big O Notation — Fastest to Slowest</div>
+      <div id="bigo-bars"></div>
+    </div>
+
+    <!-- Practical Impact -->
+    <div class="glass-card accent-orange">
+      <div class="info-row">
+        <div class="info-icon orange">🧮</div>
+        <div class="info-body">
+          <h3 class="color-orange">Practical Impact (n = 1,000,000)</h3>
+          <p>
+            <span class="badge badge-green">O(log n)</span> ≈ <strong>20</strong> operations &nbsp;·&nbsp;
+            <span class="badge badge-yellow">O(n)</span> ≈ <strong>1 million</strong> &nbsp;·&nbsp;
+            <span class="badge badge-orange">O(n log n)</span> ≈ <strong>20 million</strong> &nbsp;·&nbsp;
+            <span class="badge badge-red">O(n²)</span> ≈ <strong>1 trillion!</strong>
+          </p>
+        </div>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- ════════════════════════════════════════════════════════════
+       TAB 2: SEARCH ALGORITHMS
+       ════════════════════════════════════════════════════════════ -->
+  <section class="tab-content" id="tab-search">
+
+    <!-- Algorithm pills -->
+    <div class="algo-pills">
+      <button class="algo-pill active" data-search="linear">🔎 Linear Search</button>
+      <button class="algo-pill" data-search="binary">⚡ Binary Search</button>
+    </div>
+
+    <!-- Search Demo -->
+    <div class="glass-card accent-cyan">
+      <div class="section-title color-cyan" id="search-algo-title">🔎 Linear Search — O(n)</div>
+      <div class="search-demo-controls">
+        <input type="text" class="search-input" id="searchInput" placeholder="Search for a name…" value="Grace">
+        <button class="ctrl-btn play" id="searchPlayBtn" onclick="startSearch()">▶️ Search</button>
+        <button class="ctrl-btn reset" id="searchResetBtn" onclick="resetSearch()">🔄 Reset</button>
+        <div class="speed-group">
+          <label style="font-size:12px;color:var(--text-muted)">Speed:</label>
+          <button class="speed-btn" data-search-speed="800">🐢</button>
+          <button class="speed-btn active" data-search-speed="400">🚶</button>
+          <button class="speed-btn" data-search-speed="150">🏃</button>
+        </div>
+      </div>
+      <div class="search-items" id="searchItems"></div>
+      <div class="search-status-wrap">
+        <span class="search-status" id="searchStatus">Enter a name and click Search</span>
+      </div>
+    </div>
+
+    <!-- LINEAR SEARCH explanation -->
+    <div class="glass-card accent-red" id="explain-linear">
+      <div class="info-row">
+        <div class="info-icon red">🔎</div>
+        <div class="info-body">
+          <h3 class="color-red">Linear Search — How It Works</h3>
+          <p>Scans <strong>every</strong> contact in the list from start to end until the target is found (or list ends). Simple but slow for large datasets.</p>
+        </div>
+      </div>
+      <div style="margin-top:14px">
+        <span class="badge badge-yellow">Time: O(n)</span>
+        <span class="badge badge-green" style="margin-left:6px">Space: O(1)</span>
+        <span class="badge badge-green" style="margin-left:6px">Best: O(1)</span>
+        <span class="badge badge-yellow" style="margin-left:6px">Worst: O(n)</span>
+      </div>
+      <ul class="step-list" style="margin-top:14px">
+        <li><span class="step-num" style="background:linear-gradient(135deg,var(--accent-red),var(--accent-orange))">1</span> Start at index 0</li>
+        <li><span class="step-num" style="background:linear-gradient(135deg,var(--accent-orange),var(--accent-yellow))">2</span> Compare current element with target</li>
+        <li><span class="step-num" style="background:linear-gradient(135deg,var(--accent-yellow),var(--accent-green))">3</span> If match → found! Return the contact</li>
+        <li><span class="step-num" style="background:linear-gradient(135deg,var(--accent-green),var(--accent-cyan))">4</span> If no match → move to next element</li>
+        <li><span class="step-num" style="background:linear-gradient(135deg,var(--accent-cyan),var(--accent-blue))">5</span> If end of list → not found</li>
+      </ul>
+    </div>
+
+    <!-- BINARY SEARCH explanation -->
+    <div class="glass-card accent-blue" id="explain-binary" style="display:none">
+      <div class="info-row">
+        <div class="info-icon blue">⚡</div>
+        <div class="info-body">
+          <h3 class="color-blue">Binary Search — How It Works</h3>
+          <p>Requires <strong>sorted</strong> data. Repeatedly divides the search space in half — much faster than linear search for large datasets!</p>
+        </div>
+      </div>
+      <div style="margin-top:14px">
+        <span class="badge badge-teal">Time: O(log n)</span>
+        <span class="badge badge-green" style="margin-left:6px">Space: O(1)</span>
+        <span class="badge badge-green" style="margin-left:6px">Best: O(1)</span>
+        <span class="badge badge-teal" style="margin-left:6px">Worst: O(log n)</span>
+      </div>
+      <ul class="step-list" style="margin-top:14px">
+        <li><span class="step-num" style="background:linear-gradient(135deg,var(--accent-blue),var(--accent-purple))">1</span> Set left = 0, right = end of list</li>
+        <li><span class="step-num" style="background:linear-gradient(135deg,var(--accent-purple),var(--accent-pink))">2</span> Find mid = (left + right) / 2</li>
+        <li><span class="step-num" style="background:linear-gradient(135deg,var(--accent-pink),var(--accent-red))">3</span> Compare mid element with target</li>
+        <li><span class="step-num" style="background:linear-gradient(135deg,var(--accent-red),var(--accent-orange))">4</span> If target &lt; mid → search left half</li>
+        <li><span class="step-num" style="background:linear-gradient(135deg,var(--accent-orange),var(--accent-green))">5</span> If target &gt; mid → search right half</li>
+        <li><span class="step-num" style="background:linear-gradient(135deg,var(--accent-green),var(--accent-cyan))">6</span> Repeat until found or left &gt; right</li>
+      </ul>
+    </div>
+
+    <!-- BST + Comparison -->
+    <div class="glass-card accent-green">
+      <div class="info-row">
+        <div class="info-icon green">🌳</div>
+        <div class="info-body">
+          <h3 class="color-green">Binary Search Tree (BST)</h3>
+          <p>The PhoneBook also supports BST search — contacts are inserted into a tree structure by name. Average lookup is <strong>O(log n)</strong>, but can degrade to O(n) if the tree is unbalanced.</p>
+        </div>
+      </div>
+      <div style="margin-top:14px">
+        <span class="badge badge-teal">Avg: O(log n)</span>
+        <span class="badge badge-red" style="margin-left:6px">Worst: O(n)</span>
+        <span class="badge badge-yellow" style="margin-left:6px">Space: O(n)</span>
+      </div>
+    </div>
+
+    <!-- Search Comparison Table -->
+    <div class="glass-card">
+      <div class="section-title color-yellow">🆚 Search Algorithm Comparison</div>
+      <table class="comp-table">
+        <thead>
+          <tr>
+            <th>Algorithm</th>
+            <th>Best</th>
+            <th>Average</th>
+            <th>Worst</th>
+            <th>Requires</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="color-red">Linear Search</td>
+            <td><span class="badge badge-green">O(1)</span></td>
+            <td><span class="badge badge-yellow">O(n)</span></td>
+            <td><span class="badge badge-yellow">O(n)</span></td>
+            <td>Nothing</td>
+          </tr>
+          <tr>
+            <td class="color-blue">Binary Search</td>
+            <td><span class="badge badge-green">O(1)</span></td>
+            <td><span class="badge badge-teal">O(log n)</span></td>
+            <td><span class="badge badge-teal">O(log n)</span></td>
+            <td>Sorted data</td>
+          </tr>
+          <tr>
+            <td class="color-green">BST Search</td>
+            <td><span class="badge badge-green">O(1)</span></td>
+            <td><span class="badge badge-teal">O(log n)</span></td>
+            <td><span class="badge badge-yellow">O(n)</span></td>
+            <td>BST structure</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+  </section>
+
+  <!-- ════════════════════════════════════════════════════════════
+       TAB 3: SORT ALGORITHMS
+       ════════════════════════════════════════════════════════════ -->
+  <section class="tab-content" id="tab-sort">
+
+    <!-- SORTING VISUALIZER -->
+    <div class="glass-card accent-pink visualizer-container">
+      <div class="section-title color-pink">🎬 Sorting Visualizer</div>
+      <div class="sort-controls">
+        <label>Algorithm:</label>
+        <select id="sortAlgoSelect">
+          <option value="bubble">Bubble Sort</option>
+          <option value="selection">Selection Sort</option>
+          <option value="merge" selected>Merge Sort</option>
+          <option value="quick">Quick Sort</option>
+        </select>
+        <button class="ctrl-btn play" id="sortPlayBtn" onclick="startSort()">▶️ Play</button>
+        <button class="ctrl-btn reset" id="sortResetBtn" onclick="resetSort()">🔄 Reset</button>
+        <div class="speed-group">
+          <label style="font-size:12px;color:var(--text-muted)">Speed:</label>
+          <button class="speed-btn" data-sort-speed="200">🐢</button>
+          <button class="speed-btn active" data-sort-speed="80">🚶</button>
+          <button class="speed-btn" data-sort-speed="25">🏃</button>
+        </div>
+      </div>
+
+      <div class="bars-container" id="barsContainer"></div>
+      <div class="sort-status-wrap">
+        <span class="sort-status" id="sortStatus">Press Play to start</span>
+      </div>
+    </div>
+
+    <!-- ALGORITHM EXPLANATIONS -->
+    <div class="glass-card accent-red">
+      <div class="info-row">
+        <div class="info-icon red">🫧</div>
+        <div class="info-body">
+          <h3 class="color-red">Bubble Sort — The Simplest</h3>
+          <p>Repeatedly compares <strong>adjacent</strong> elements and swaps them if they're in the wrong order. Each pass "bubbles" the largest unsorted element to its correct position.</p>
+        </div>
+      </div>
+      <div style="margin-top:12px">
+        <span class="badge badge-red">Time: O(n²)</span>
+        <span class="badge badge-green" style="margin-left:6px">Space: O(1)</span>
+        <span class="badge badge-green" style="margin-left:6px">Stable: Yes</span>
+      </div>
+    </div>
+
+    <div class="glass-card accent-orange">
+      <div class="info-row">
+        <div class="info-icon orange">👆</div>
+        <div class="info-body">
+          <h3 class="color-orange">Selection Sort — Predictable</h3>
+          <p>Finds the <strong>minimum</strong> element repeatedly and places it at the beginning of the unsorted portion. Always O(n²) — no best case optimization.</p>
+        </div>
+      </div>
+      <div style="margin-top:12px">
+        <span class="badge badge-red">Time: O(n²)</span>
+        <span class="badge badge-green" style="margin-left:6px">Space: O(1)</span>
+        <span class="badge badge-red" style="margin-left:6px">Stable: No</span>
+      </div>
+    </div>
+
+    <div class="glass-card accent-cyan">
+      <div class="info-row">
+        <div class="info-icon cyan">🔀</div>
+        <div class="info-body">
+          <h3 class="color-cyan">Merge Sort — Guaranteed Fast</h3>
+          <p>Divides the array in half recursively, sorts each half, then <strong>merges</strong> them back together. Always O(n log n) — guaranteed performance regardless of input!</p>
+        </div>
+      </div>
+      <div style="margin-top:12px">
+        <span class="badge badge-orange">Time: O(n log n)</span>
+        <span class="badge badge-yellow" style="margin-left:6px">Space: O(n)</span>
+        <span class="badge badge-green" style="margin-left:6px">Stable: Yes</span>
+      </div>
+    </div>
+
+    <div class="glass-card accent-green">
+      <div class="info-row">
+        <div class="info-icon green">⚡</div>
+        <div class="info-body">
+          <h3 class="color-green">Quick Sort — Industry Standard</h3>
+          <p>Picks a <strong>pivot</strong>, partitions elements around it, then recursively sorts partitions. Average O(n log n), worst O(n²). Most commonly used in practice!</p>
+        </div>
+      </div>
+      <div style="margin-top:12px">
+        <span class="badge badge-orange">Avg: O(n log n)</span>
+        <span class="badge badge-red" style="margin-left:6px">Worst: O(n²)</span>
+        <span class="badge badge-green" style="margin-left:6px">Space: O(log n)</span>
+      </div>
+    </div>
+
+    <!-- Sort Comparison Table -->
+    <div class="glass-card">
+      <div class="section-title color-yellow">🆚 Sorting Algorithm Comparison</div>
+      <table class="comp-table">
+        <thead>
+          <tr>
+            <th>Algorithm</th>
+            <th>Best</th>
+            <th>Average</th>
+            <th>Worst</th>
+            <th>Space</th>
+            <th>Stable</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="color-red">Bubble Sort</td>
+            <td><span class="badge badge-yellow">O(n)</span></td>
+            <td><span class="badge badge-red">O(n²)</span></td>
+            <td><span class="badge badge-red">O(n²)</span></td>
+            <td><span class="badge badge-green">O(1)</span></td>
+            <td>✅</td>
+          </tr>
+          <tr>
+            <td class="color-orange">Selection Sort</td>
+            <td><span class="badge badge-red">O(n²)</span></td>
+            <td><span class="badge badge-red">O(n²)</span></td>
+            <td><span class="badge badge-red">O(n²)</span></td>
+            <td><span class="badge badge-green">O(1)</span></td>
+            <td>❌</td>
+          </tr>
+          <tr>
+            <td class="color-cyan">Merge Sort</td>
+            <td><span class="badge badge-orange">O(n log n)</span></td>
+            <td><span class="badge badge-orange">O(n log n)</span></td>
+            <td><span class="badge badge-orange">O(n log n)</span></td>
+            <td><span class="badge badge-yellow">O(n)</span></td>
+            <td>✅</td>
+          </tr>
+          <tr>
+            <td class="color-green">Quick Sort</td>
+            <td><span class="badge badge-orange">O(n log n)</span></td>
+            <td><span class="badge badge-orange">O(n log n)</span></td>
+            <td><span class="badge badge-red">O(n²)</span></td>
+            <td><span class="badge badge-teal">O(log n)</span></td>
+            <td>❌</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Recommendations -->
+    <div class="glass-card accent-blue">
+      <div class="section-title color-blue">💡 When to Use What?</div>
+      <ul class="step-list">
+        <li><span class="step-num" style="background:linear-gradient(135deg,var(--accent-red),var(--accent-orange))">1</span><span><strong>Small arrays</strong> — Bubble or Selection (simple, easy to understand)</span></li>
+        <li><span class="step-num" style="background:linear-gradient(135deg,var(--accent-cyan),var(--accent-blue))">2</span><span><strong>Large arrays</strong> — Merge or Quick Sort (efficient O(n log n))</span></li>
+        <li><span class="step-num" style="background:linear-gradient(135deg,var(--accent-green),var(--accent-teal))">3</span><span><strong>Stability needed</strong> — Merge Sort (maintains relative order)</span></li>
+        <li><span class="step-num" style="background:linear-gradient(135deg,var(--accent-pink),var(--accent-purple))">4</span><span><strong>Interviews &amp; practice</strong> — Quick Sort (most commonly asked)</span></li>
+      </ul>
+    </div>
+
+  </section>
+
+  <!-- ════════════════════════════════════════════════════════════
+       TAB 4: CODE
+       ════════════════════════════════════════════════════════════ -->
+  <section class="tab-content" id="tab-code">
+
+    <!-- Code File Selector -->
+    <div class="algo-pills">
+      <button class="algo-pill active" data-code="core">📂 Core Functions</button>
+      <button class="algo-pill" data-code="search">🔍 Search Functions</button>
+      <button class="algo-pill" data-code="sort">📊 Sort Functions</button>
+      <button class="algo-pill" data-code="io">💾 File I/O</button>
+    </div>
+
+    <!-- Code: Core Functions -->
+    <div class="code-section active" id="code-core">
+      <div class="glass-card">
+        <div class="code-block">
+          <div class="code-title color-yellow">🐍 Core CRUD Operations</div>
+<pre>
+<span class="cm"># Global list to store contacts</span>
+<span class="kw">contacts</span> = []
+
+<span class="kw">def</span> <span class="fn">add_contact</span>(name, phone):
+    <span class="str">"""Add a new contact. Time Complexity: O(n)"""</span>
+    <span class="kw">if not</span> name <span class="kw">or not</span> phone:
+        <span class="bi">print</span>(<span class="str">"Error: Name and phone cannot be empty."</span>)
+        <span class="kw">return</span> <span class="num">False</span>
+
+    <span class="cm"># Linear Search for duplicates - O(n)</span>
+    <span class="kw">for</span> contact <span class="kw">in</span> contacts:
+        <span class="kw">if</span> contact[<span class="str">'name'</span>].lower() <span class="op">==</span> name.lower():
+            <span class="bi">print</span>(<span class="str">f"Error: Contact '{name}' already exists."</span>)
+            <span class="kw">return</span> <span class="num">False</span>
+
+    contacts.append({<span class="str">'name'</span>: name, <span class="str">'phone'</span>: phone})
+    <span class="kw">return</span> <span class="num">True</span>
+
+<span class="kw">def</span> <span class="fn">remove_contact</span>(name):
+    <span class="str">"""Remove a contact by name. Time Complexity: O(n)"""</span>
+    <span class="kw">for</span> i, contact <span class="kw">in</span> <span class="bi">enumerate</span>(contacts):
+        <span class="kw">if</span> contact[<span class="str">'name'</span>].lower() <span class="op">==</span> name.lower():
+            contacts.pop(i)
+            <span class="kw">return</span> <span class="num">True</span>
+    <span class="kw">return</span> <span class="num">False</span>
+
+<span class="kw">def</span> <span class="fn">edit_contact</span>(name, new_phone):
+    <span class="str">"""Edit a contact's phone number. Time Complexity: O(n)"""</span>
+    <span class="kw">for</span> contact <span class="kw">in</span> contacts:
+        <span class="kw">if</span> contact[<span class="str">'name'</span>].lower() <span class="op">==</span> name.lower():
+            contact[<span class="str">'phone'</span>] <span class="op">=</span> new_phone
+            <span class="kw">return</span> <span class="num">True</span>
+    <span class="kw">return</span> <span class="num">False</span>
+</pre>
+        </div>
+      </div>
+    </div>
+
+    <!-- Code: Search Functions -->
+    <div class="code-section" id="code-search" style="display:none">
+      <div class="glass-card">
+        <div class="code-block">
+          <div class="code-title color-cyan">🔍 Search Algorithms</div>
+<pre>
+<span class="kw">def</span> <span class="fn">linear_search</span>(search_name):
+    <span class="str">"""Linear search for contacts by name. Time: O(n)"""</span>
+    search_name <span class="op">=</span> search_name.lower()
+    results <span class="op">=</span> []
+    <span class="kw">for</span> contact <span class="kw">in</span> contacts:
+        <span class="kw">if</span> search_name <span class="kw">in</span> contact[<span class="str">'name'</span>].lower():
+            results.append(contact)
+    <span class="kw">return</span> results
+
+<span class="kw">def</span> <span class="fn">binary_search</span>(phone):
+    <span class="str">"""Binary search by phone. Time: O(log n)
+    Note: Requires contacts sorted by phone number."""</span>
+    left, right <span class="op">=</span> <span class="num">0</span>, <span class="bi">len</span>(contacts) <span class="op">-</span> <span class="num">1</span>
+
+    <span class="kw">while</span> left <span class="op">&lt;=</span> right:
+        mid <span class="op">=</span> (left <span class="op">+</span> right) <span class="op">//</span> <span class="num">2</span>
+        mid_phone <span class="op">=</span> contacts[mid][<span class="str">'phone'</span>]
+
+        <span class="kw">if</span> mid_phone <span class="op">==</span> phone:
+            <span class="kw">return</span> contacts[mid]
+        <span class="kw">elif</span> mid_phone <span class="op">&lt;</span> phone:
+            left <span class="op">=</span> mid <span class="op">+</span> <span class="num">1</span>
+        <span class="kw">else</span>:
+            right <span class="op">=</span> mid <span class="op">-</span> <span class="num">1</span>
+    <span class="kw">return</span> <span class="num">None</span>
+
+<span class="kw">def</span> <span class="fn">insert_bst_node</span>(root, contact):
+    <span class="str">"""Insert contact into BST. Time: O(log n) avg"""</span>
+    <span class="kw">if</span> root <span class="kw">is</span> <span class="num">None</span>:
+        <span class="kw">return</span> {<span class="str">'contact'</span>: contact, <span class="str">'left'</span>: <span class="num">None</span>, <span class="str">'right'</span>: <span class="num">None</span>}
+    <span class="kw">if</span> contact[<span class="str">'name'</span>].lower() <span class="op">&lt;</span> root[<span class="str">'contact'</span>][<span class="str">'name'</span>].lower():
+        root[<span class="str">'left'</span>] <span class="op">=</span> insert_bst_node(root[<span class="str">'left'</span>], contact)
+    <span class="kw">else</span>:
+        root[<span class="str">'right'</span>] <span class="op">=</span> insert_bst_node(root[<span class="str">'right'</span>], contact)
+    <span class="kw">return</span> root
+
+<span class="kw">def</span> <span class="fn">search_bst_node</span>(root, name):
+    <span class="str">"""Search in BST. Time: O(log n) avg, O(n) worst"""</span>
+    <span class="kw">if</span> root <span class="kw">is</span> <span class="num">None</span>:
+        <span class="kw">return</span> <span class="num">None</span>
+    <span class="kw">if</span> root[<span class="str">'contact'</span>][<span class="str">'name'</span>].lower() <span class="op">==</span> name.lower():
+        <span class="kw">return</span> root[<span class="str">'contact'</span>]
+    <span class="kw">elif</span> name.lower() <span class="op">&lt;</span> root[<span class="str">'contact'</span>][<span class="str">'name'</span>].lower():
+        <span class="kw">return</span> search_bst_node(root[<span class="str">'left'</span>], name)
+    <span class="kw">else</span>:
+        <span class="kw">return</span> search_bst_node(root[<span class="str">'right'</span>], name)
+</pre>
+        </div>
+      </div>
+    </div>
+
+    <!-- Code: Sort Functions -->
+    <div class="code-section" id="code-sort" style="display:none">
+      <div class="glass-card">
+        <div class="code-block">
+          <div class="code-title color-pink">📊 Sorting Algorithms</div>
+<pre>
+<span class="kw">def</span> <span class="fn">bubble_sort</span>():
+    <span class="str">"""Sort contacts by name. Time: O(n²)"""</span>
+    n <span class="op">=</span> <span class="bi">len</span>(contacts)
+    <span class="kw">for</span> i <span class="kw">in</span> <span class="bi">range</span>(n):
+        <span class="kw">for</span> j <span class="kw">in</span> <span class="bi">range</span>(<span class="num">0</span>, n <span class="op">-</span> i <span class="op">-</span> <span class="num">1</span>):
+            <span class="kw">if</span> contacts[j][<span class="str">'name'</span>].lower() <span class="op">&gt;</span> contacts[j<span class="op">+</span><span class="num">1</span>][<span class="str">'name'</span>].lower():
+                contacts[j], contacts[j<span class="op">+</span><span class="num">1</span>] <span class="op">=</span> contacts[j<span class="op">+</span><span class="num">1</span>], contacts[j]
+
+<span class="kw">def</span> <span class="fn">selection_sort</span>():
+    <span class="str">"""Sort contacts by name. Time: O(n²)"""</span>
+    n <span class="op">=</span> <span class="bi">len</span>(contacts)
+    <span class="kw">for</span> i <span class="kw">in</span> <span class="bi">range</span>(n):
+        min_idx <span class="op">=</span> i
+        <span class="kw">for</span> j <span class="kw">in</span> <span class="bi">range</span>(i <span class="op">+</span> <span class="num">1</span>, n):
+            <span class="kw">if</span> contacts[j][<span class="str">'name'</span>].lower() <span class="op">&lt;</span> contacts[min_idx][<span class="str">'name'</span>].lower():
+                min_idx <span class="op">=</span> j
+        contacts[i], contacts[min_idx] <span class="op">=</span> contacts[min_idx], contacts[i]
+
+<span class="kw">def</span> <span class="fn">merge_sort</span>():
+    <span class="str">"""Sort contacts. Time: O(n log n)"""</span>
+    <span class="kw">def</span> <span class="fn">merge</span>(arr, left, mid, right):
+        left_part  <span class="op">=</span> arr[left:mid <span class="op">+</span> <span class="num">1</span>]
+        right_part <span class="op">=</span> arr[mid <span class="op">+</span> <span class="num">1</span>:right <span class="op">+</span> <span class="num">1</span>]
+        i <span class="op">=</span> j <span class="op">=</span> <span class="num">0</span>; k <span class="op">=</span> left
+        <span class="kw">while</span> i <span class="op">&lt;</span> <span class="bi">len</span>(left_part) <span class="kw">and</span> j <span class="op">&lt;</span> <span class="bi">len</span>(right_part):
+            <span class="kw">if</span> left_part[i] <span class="op">&lt;=</span> right_part[j]:
+                arr[k] <span class="op">=</span> left_part[i]; i <span class="op">+=</span> <span class="num">1</span>
+            <span class="kw">else</span>:
+                arr[k] <span class="op">=</span> right_part[j]; j <span class="op">+=</span> <span class="num">1</span>
+            k <span class="op">+=</span> <span class="num">1</span>
+    <span class="kw">def</span> <span class="fn">merge_sort_helper</span>(arr, left, right):
+        <span class="kw">if</span> left <span class="op">&lt;</span> right:
+            mid <span class="op">=</span> (left <span class="op">+</span> right) <span class="op">//</span> <span class="num">2</span>
+            merge_sort_helper(arr, left, mid)
+            merge_sort_helper(arr, mid <span class="op">+</span> <span class="num">1</span>, right)
+            merge(arr, left, mid, right)
+
+<span class="kw">def</span> <span class="fn">quick_sort</span>():
+    <span class="str">"""Sort contacts. Time: O(n log n) avg"""</span>
+    <span class="kw">def</span> <span class="fn">partition</span>(arr, low, high):
+        pivot <span class="op">=</span> arr[high]
+        i <span class="op">=</span> low <span class="op">-</span> <span class="num">1</span>
+        <span class="kw">for</span> j <span class="kw">in</span> <span class="bi">range</span>(low, high):
+            <span class="kw">if</span> arr[j] <span class="op">&lt;</span> pivot:
+                i <span class="op">+=</span> <span class="num">1</span>
+                arr[i], arr[j] <span class="op">=</span> arr[j], arr[i]
+        arr[i<span class="op">+</span><span class="num">1</span>], arr[high] <span class="op">=</span> arr[high], arr[i<span class="op">+</span><span class="num">1</span>]
+        <span class="kw">return</span> i <span class="op">+</span> <span class="num">1</span>
+    <span class="kw">def</span> <span class="fn">quick_sort_helper</span>(arr, low, high):
+        <span class="kw">if</span> low <span class="op">&lt;</span> high:
+            pi <span class="op">=</span> partition(arr, low, high)
+            quick_sort_helper(arr, low, pi <span class="op">-</span> <span class="num">1</span>)
+            quick_sort_helper(arr, pi <span class="op">+</span> <span class="num">1</span>, high)
+</pre>
+        </div>
+      </div>
+    </div>
+
+    <!-- Code: File I/O -->
+    <div class="code-section" id="code-io" style="display:none">
+      <div class="glass-card">
+        <div class="code-block">
+          <div class="code-title color-green">💾 File I/O — CSV Persistence</div>
+<pre>
+<span class="kw">def</span> <span class="fn">load_from_file</span>(filename<span class="op">=</span><span class="str">"PhoneBookDataset.csv"</span>):
+    <span class="str">"""Load contacts from CSV. Time: O(n)"""</span>
+    <span class="kw">import</span> csv, os
+    <span class="kw">if not</span> os.path.exists(filename):
+        <span class="bi">print</span>(<span class="str">f"Note: {filename} does not exist."</span>)
+        <span class="kw">return</span> <span class="num">False</span>
+    <span class="kw">with</span> <span class="bi">open</span>(filename, <span class="str">'r'</span>, encoding<span class="op">=</span><span class="str">'utf-8'</span>) <span class="kw">as</span> f:
+        reader <span class="op">=</span> csv.DictReader(f)
+        <span class="kw">for</span> row <span class="kw">in</span> reader:
+            <span class="kw">if</span> row.get(<span class="str">'name'</span>) <span class="kw">and</span> row.get(<span class="str">'phone'</span>):
+                add_contact(row[<span class="str">'name'</span>], row[<span class="str">'phone'</span>])
+    <span class="kw">return</span> <span class="num">True</span>
+
+<span class="kw">def</span> <span class="fn">save_to_file</span>(filename<span class="op">=</span><span class="str">"PhoneBookDataset.csv"</span>):
+    <span class="str">"""Save contacts to CSV. Time: O(n)"""</span>
+    <span class="kw">import</span> csv, os
+    <span class="kw">with</span> <span class="bi">open</span>(filename, <span class="str">'w'</span>, newline<span class="op">=</span><span class="str">''</span>, encoding<span class="op">=</span><span class="str">'utf-8'</span>) <span class="kw">as</span> f:
+        writer <span class="op">=</span> csv.DictWriter(f, fieldnames<span class="op">=</span>[<span class="str">'name'</span>, <span class="str">'phone'</span>])
+        writer.writeheader()
+        writer.writerows(contacts)
+    <span class="kw">return</span> <span class="num">True</span>
+</pre>
+        </div>
+      </div>
+    </div>
+
+    <!-- Complexity Summary Card -->
+    <div class="glass-card accent-blue">
+      <div class="section-title color-blue">📋 All Functions — Time Complexity</div>
+      <table class="comp-table">
+        <thead>
+          <tr><th>Function</th><th>Complexity</th><th>Description</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>add_contact()</td><td><span class="badge badge-yellow">O(n)</span></td><td>Linear search for duplicates</td></tr>
+          <tr><td>remove_contact()</td><td><span class="badge badge-yellow">O(n)</span></td><td>Linear search to find contact</td></tr>
+          <tr><td>edit_contact()</td><td><span class="badge badge-yellow">O(n)</span></td><td>Linear search to find contact</td></tr>
+          <tr><td>linear_search()</td><td><span class="badge badge-yellow">O(n)</span></td><td>Must check every contact</td></tr>
+          <tr><td>binary_search()</td><td><span class="badge badge-teal">O(log n)</span></td><td>Requires sorted list</td></tr>
+          <tr><td>bubble_sort()</td><td><span class="badge badge-red">O(n²)</span></td><td>Two nested loops</td></tr>
+          <tr><td>selection_sort()</td><td><span class="badge badge-red">O(n²)</span></td><td>Find minimum repeatedly</td></tr>
+          <tr><td>merge_sort()</td><td><span class="badge badge-orange">O(n log n)</span></td><td>Divide and conquer</td></tr>
+          <tr><td>quick_sort()</td><td><span class="badge badge-orange">O(n log n)</span></td><td>Partition by pivot</td></tr>
+          <tr><td>load_from_file()</td><td><span class="badge badge-yellow">O(n)</span></td><td>Read n contacts</td></tr>
+          <tr><td>save_to_file()</td><td><span class="badge badge-yellow">O(n)</span></td><td>Write n contacts</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+  </section>
+
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
