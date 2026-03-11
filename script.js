@@ -2,11 +2,9 @@
 // PhoneBook Algorithm Explorer — Interactive Script
 // ─────────────────────────────────────────────────────
 
-// hey
-
 const COLORS = [
-  '#FF6B6B','#FF9F43','#FECA57','#48DBFB','#FF9FF3',
-  '#54A0FF','#5F27CD','#00D2D3','#1DD1A1','#C8D6E5'
+  '#FF3B5C','#FF8C42','#FFD93D','#00E5FF','#FF69EB',
+  '#448AFF','#B388FF','#00E5CC','#00E676','#555555'
 ];
 
 // ═══════════════════════════════════════════════════════
@@ -53,14 +51,15 @@ document.querySelectorAll('.algo-pill[data-search]').forEach(pill => {
     currentSearchAlgo = pill.dataset.search;
     const titleEl = document.getElementById('search-algo-title');
     if (currentSearchAlgo === 'linear') {
-      titleEl.textContent = '🔎 Linear Search — O(n)';
+      titleEl.innerHTML = '<i data-lucide="scan-search" class="section-icon"></i> Linear Search — O(n)';
       document.getElementById('explain-linear').style.display = '';
       document.getElementById('explain-binary').style.display = 'none';
     } else {
-      titleEl.textContent = '⚡ Binary Search — O(log n)';
+      titleEl.innerHTML = '<i data-lucide="zap" class="section-icon"></i> Binary Search — O(log n)';
       document.getElementById('explain-linear').style.display = 'none';
       document.getElementById('explain-binary').style.display = '';
     }
+    lucide.createIcons();
     resetSearch();
   });
 });
@@ -135,23 +134,23 @@ function runLinearSearch(data, target) {
     }
 
     if (i >= data.length) {
-      status.textContent = `❌ "${target}" not found after ${data.length} comparisons`;
+      status.textContent = `✗ "${target}" not found after ${data.length} comparisons`;
       status.style.background = 'rgba(255,107,107,0.2)';
-      status.style.color = '#FF6B6B';
+      status.style.color = '#FF3B5C';
       document.getElementById('searchPlayBtn').disabled = false;
       return;
     }
 
     const el = document.getElementById('si-' + i);
     el.classList.add('checking');
-    status.textContent = `Checking index [${i}]: "${data[i]}" ${data[i].toLowerCase().includes(target.toLowerCase()) ? '✅ Match!' : ''}`;
+    status.textContent = `Checking index [${i}]: "${data[i]}" ${data[i].toLowerCase().includes(target.toLowerCase()) ? '— Match!' : ''}`;
 
     if (data[i].toLowerCase().includes(target.toLowerCase())) {
       el.classList.remove('checking');
       el.classList.add('found');
-      status.textContent = `✅ Found "${data[i]}" at index [${i}] — ${i + 1} comparison(s)`;
-      status.style.background = 'rgba(29,209,161,0.2)';
-      status.style.color = '#1DD1A1';
+      status.textContent = `✓ Found "${data[i]}" at index [${i}] — ${i + 1} comparison(s)`;
+      status.style.background = 'rgba(0,230,118,0.15)';
+      status.style.color = '#00E676';
       document.getElementById('searchPlayBtn').disabled = false;
       return;
     }
@@ -175,9 +174,9 @@ function runBinarySearch(data, target) {
     });
 
     if (left > right) {
-      status.textContent = `❌ "${target}" not found after ${comparisons} comparisons`;
-      status.style.background = 'rgba(255,107,107,0.2)';
-      status.style.color = '#FF6B6B';
+      status.textContent = `✗ "${target}" not found after ${comparisons} comparisons`;
+      status.style.background = 'rgba(255,59,92,0.15)';
+      status.style.color = '#FF3B5C';
       document.getElementById('searchPlayBtn').disabled = false;
       return;
     }
@@ -192,9 +191,9 @@ function runBinarySearch(data, target) {
     if (data[mid].toLowerCase() === target.toLowerCase()) {
       el.classList.remove('checking');
       el.classList.add('found');
-      status.textContent = `✅ Found "${data[mid]}" at index [${mid}] — ${comparisons} comparison(s)`;
-      status.style.background = 'rgba(29,209,161,0.2)';
-      status.style.color = '#1DD1A1';
+      status.textContent = `✓ Found "${data[mid]}" at index [${mid}] — ${comparisons} comparison(s)`;
+      status.style.background = 'rgba(0,230,118,0.15)';
+      status.style.color = '#00E676';
       document.getElementById('searchPlayBtn').disabled = false;
       return;
     }
@@ -284,8 +283,9 @@ function resetSort() {
   document.getElementById('sortStatus').style.background = 'rgba(255,255,255,0.08)';
   document.getElementById('sortStatus').style.color = '';
   document.getElementById('sortPlayBtn').disabled = false;
-  document.getElementById('sortPlayBtn').textContent = '▶️ Play';
+  document.getElementById('sortPlayBtn').innerHTML = '<i data-lucide="play" class="btn-icon"></i> Play';
   document.getElementById('sortPlayBtn').className = 'ctrl-btn play';
+  lucide.createIcons();
 }
 
 function sleep(ms) {
@@ -318,9 +318,9 @@ async function startSort() {
     // Mark all as sorted
     const allSorted = new Set(sortArr.map((_, i) => i));
     renderBars(sortArr, { sorted: allSorted });
-    status.textContent = '🎉 Sorted! Well done!';
-    status.style.background = 'linear-gradient(135deg, #1DD1A1, #00b894)';
-    status.style.color = '#fff';
+    status.textContent = '✓ Sorted! Well done!';
+    status.style.background = 'linear-gradient(135deg, #00E676, #00c853)';
+    status.style.color = '#000';
   }
   sortRunning = false;
   document.getElementById('sortPlayBtn').disabled = false;
@@ -439,12 +439,12 @@ function renderBigOBars() {
   const container = document.getElementById('bigo-bars');
   if (!container) return;
   const data = [
-    { label: 'O(1)', desc: 'Constant', width: 5, color: '#1DD1A1' },
-    { label: 'O(log n)', desc: 'Logarithmic', width: 12, color: '#00D2D3' },
-    { label: 'O(n)', desc: 'Linear', width: 30, color: '#FECA57' },
-    { label: 'O(n log n)', desc: 'Linearithmic', width: 55, color: '#FF9F43' },
-    { label: 'O(n²)', desc: 'Quadratic', width: 85, color: '#FF6B6B' },
-    { label: 'O(2ⁿ)', desc: 'Exponential', width: 100, color: '#c0392b' },
+    { label: 'O(1)', desc: 'Constant', width: 5, color: '#00E676' },
+    { label: 'O(log n)', desc: 'Logarithmic', width: 12, color: '#00E5CC' },
+    { label: 'O(n)', desc: 'Linear', width: 30, color: '#FFD93D' },
+    { label: 'O(n log n)', desc: 'Linearithmic', width: 55, color: '#FF8C42' },
+    { label: 'O(n²)', desc: 'Quadratic', width: 85, color: '#FF3B5C' },
+    { label: 'O(2ⁿ)', desc: 'Exponential', width: 100, color: '#B388FF' },
   ];
 
   container.innerHTML = data.map((d, i) => `
@@ -466,4 +466,3 @@ document.addEventListener('DOMContentLoaded', () => {
   resetSort();
   resetSearch();
 });
-
