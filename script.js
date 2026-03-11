@@ -2,6 +2,8 @@
 // PhoneBook Algorithm Explorer — Interactive Script
 // ─────────────────────────────────────────────────────
 
+// hey
+
 const COLORS = [
   '#FF6B6B','#FF9F43','#FECA57','#48DBFB','#FF9FF3',
   '#54A0FF','#5F27CD','#00D2D3','#1DD1A1','#C8D6E5'
@@ -464,3 +466,4 @@ document.addEventListener('DOMContentLoaded', () => {
   resetSort();
   resetSearch();
 });
+
