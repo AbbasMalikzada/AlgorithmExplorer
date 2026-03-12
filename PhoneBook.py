@@ -13,10 +13,11 @@ contacts = []
 # load_from_file()  : O(n)   - Read n contacts from file
 # save_to_file()    : O(n)   - Write n contacts to file
 
-def add_contact(name, phone):
+def add_contact(name, phone, silent=False):
     """Add a new contact. Time Complexity: O(n)"""
     if not name or not phone:
-        print("Error: Name and phone cannot be empty.")
+        if not silent:
+            print("Error: Name and phone cannot be empty.")
         return False
     
     name = name.strip()
@@ -25,11 +26,13 @@ def add_contact(name, phone):
     # Linear Search for duplicates - O(n)
     for contact in contacts:
         if contact['name'].lower() == name.lower():
-            print(f"Error: Contact '{name}' already exists.")
+            if not silent:
+                print(f"Error: Contact '{name}' already exists.")
             return False
     
     contacts.append({'name': name, 'phone': phone})
-    print(f"Contact '{name}' added successfully.")
+    if not silent:
+        print(f"Contact '{name}' added successfully.")
     return True
 
 def remove_contact(name):
@@ -202,21 +205,35 @@ def load_from_file(filename="PhoneBookDataset.csv"):
             print(f"Note: {filename} does not exist yet. Starting with empty phonebook.")
             return False
         
-        with open(filename, 'r', encoding='utf-8') as f:
-            reader = csv.DictReader(f)
-            if reader is None or reader.fieldnames is None:
-                print(f"{filename} is empty or invalid.")
-                return False
-            
-            count = 0
-            for row in reader:
-                if row.get('name') and row.get('phone'):
-                    add_contact(row['name'], row['phone'])
-                    count += 1
+        # Try multiple encodings to handle different file formats
+        encodings = ['utf-8', 'windows-1252', 'latin-1', 'cp1252']
         
-        if count > 0:
-            print(f"Successfully loaded {count} contact(s) from {filename}\n")
-        return True
+        for encoding in encodings:
+            try:
+                with open(filename, 'r', encoding=encoding) as f:
+                    reader = csv.DictReader(f)
+                    if reader is None or reader.fieldnames is None:
+                        print(f"{filename} is empty or invalid.")
+                        return False
+                    
+                    count = 0
+                    for row in reader:
+                        # Handle both lowercase and capitalized column names
+                        name = row.get('name') or row.get('Name')
+                        phone = row.get('phone') or row.get('Phone')
+                        
+                        if name and phone:
+                            add_contact(name, phone, silent=True)
+                            count += 1
+                    
+                    if count > 0:
+                        print(f"Successfully loaded {count} contact(s) from {filename}\n")
+                    return True
+            except (UnicodeDecodeError, UnicodeError):
+                continue
+        
+        print(f"Error: Could not read {filename} with any supported encoding.")
+        return False
     except PermissionError:
         print(f"Permission denied: Cannot read {filename}. Check file permissions.")
         return False
